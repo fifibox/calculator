@@ -1,6 +1,6 @@
 {
   "homepage": "https://fifibox.github.io/calculator",
-  "name": "new-calc",
+  "name": "calculator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
