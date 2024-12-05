@@ -1,8 +1,23 @@
+import{useEffect} from 'react';
 import{useState} from 'react';
 import {evaluate} from 'mathjs';
 
+function updateTextAlignment() {
+    const container = document.querySelector('.display');
 
-function App() {
+	if (container.offsetHeight >60){
+		container.style.textAlign = 'left';
+	} else {
+		container.style.textAlign = 'right';
+	}
+
+}
+document.addEventListener('click', updateTextAlignment);
+document.addEventListener('keydown', updateTextAlignment);
+window.addEventListener('resize', updateTextAlignment);
+
+
+function App() {	
 	// initialize calc to be ''
 	const [calc,setCalc] = useState("");
 	// initialize result to be ''
@@ -36,13 +51,10 @@ function App() {
 		}
 	}
 	
- 
-
 	// function to calculate 
 	const calculate =()=>{
 		if (!ops.includes(calc.slice(-1))){
 			if (evaluate(calc).toString() === 'Infinity' ||  evaluate(calc).toString() === 'NaN'){
-				console.log('hello')
 				setCalc('0')
 			} else{
 				setCalc(evaluate(calc).toString())
@@ -80,6 +92,25 @@ function App() {
 	return digits;
 	}
 
+	// key down event listener 
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			let key = event.key;
+			if (['1','2','3','4','5','6','7','8','9','0'].includes(key) || ops.includes(key)){
+				console.log(key)
+				updateCalc(key);
+			} else if (key === 'Backspace') {
+				deleteLast();
+			} else if (key === "Enter"){
+				calculate();
+			}
+		};
+		document.addEventListener('keydown',handleKeyDown);
+		return () =>{
+			document.removeEventListener('keydown',handleKeyDown);
+		}
+	});
+
 	return (
 		<div className="App">
 			
@@ -94,7 +125,7 @@ function App() {
 				<div className="operators">
 					{/* calls updateCalc function when clicking operators */} 
 					<button onClick={() => updateCalc('/')}>/</button>
-					<button onClick={() => updateCalc('*')}>*</button>
+					<button onClick={() => updateCalc('*')}>x</button>
 					<button onClick={() => updateCalc('+')}>+</button>
 					<button onClick={() => updateCalc('-')}>-</button>
 					<button onClick={() => deleteLast()}>DEL</button>
@@ -114,3 +145,4 @@ function App() {
 }
 
 export default App;
+
