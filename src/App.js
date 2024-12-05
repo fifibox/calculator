@@ -25,8 +25,14 @@ function App() {
 		
 		// update result if value clicked is not an operator
 		if (!ops.includes(value)){
-
-			setResult(evaluate(calc + value).toString());
+			value = evaluate(calc + value).toString()
+			if (value === 'Infinity' || value === 'NaN'){
+					
+				setResult('0')
+			}
+			else{
+			setResult(value)
+		}
 		}
 	}
 	
@@ -35,8 +41,12 @@ function App() {
 	// function to calculate 
 	const calculate =()=>{
 		if (!ops.includes(calc.slice(-1))){
-
-		setCalc(evaluate(calc).toString());
+			if (evaluate(calc).toString() === 'Infinity' ||  evaluate(calc).toString() === 'NaN'){
+				console.log('hello')
+				setCalc('0')
+			} else{
+				setCalc(evaluate(calc).toString())
+			}
 		}
 	}
 
@@ -47,11 +57,8 @@ function App() {
 
 			if (!ops.includes(calc.slice(-1))){
 				if (!ops.includes(calc[calc.length-2])){
-
 					setResult(evaluate(calc.slice(0,-1).toString()))
-				}
-				else {
-
+				} else {
 					setResult(evaluate(calc.slice(0,-2).toString()))
 				}
 			}
